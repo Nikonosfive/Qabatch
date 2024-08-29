@@ -31,16 +31,24 @@
             document.getElementById('clock').textContent = `${hours}:${minutes}:${seconds}`;
         }
 
+        function hexToRgba(hex) {
+            const r = parseInt(hex.slice(0, 2), 16);
+            const g = parseInt(hex.slice(2, 4), 16);
+            const b = parseInt(hex.slice(4, 6), 16);
+            const a = parseInt(hex.slice(6, 8), 16) / 255;
+            return `rgba(${r}, ${g}, ${b}, ${a})`;
+        }
+
         function applyColorsFromQuery() {
             const params = new URLSearchParams(window.location.search);
             const fontColor = params.get('f');
             const bgColor = params.get('b');
             
-            if (fontColor) {
-                document.getElementById('clock').style.color = `#${fontColor}`;
+            if (fontColor && fontColor.length === 8) {
+                document.getElementById('clock').style.color = hexToRgba(fontColor);
             }
-            if (bgColor) {
-                document.body.style.backgroundColor = `#${bgColor}`;
+            if (bgColor && bgColor.length === 8) {
+                document.body.style.backgroundColor = hexToRgba(bgColor);
             }
         }
 
