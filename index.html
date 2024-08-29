@@ -1,21 +1,52 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ja">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>WebRTC Simple Video Stream</title>
+    <title>デジタル時計</title>
+    <style>
+        body {
+            margin: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: #000000;
+        }
+        #clock {
+            font-size: 10vw;
+            color: #FFFFFF;
+        }
+    </style>
 </head>
 <body>
-    <h1>WebRTC Simple Video Stream</h1>
-    <video id="localVideo" autoplay playsinline muted></video>
-    <video id="remoteVideo" autoplay playsinline></video>
+    <div id="clock"></div>
 
-    <textarea id="offer" placeholder="Paste offer here..."></textarea>
-    <button id="startButton">Start</button>
+    <script>
+        function updateClock() {
+            const now = new Date();
+            const hours = String(now.getHours()).padStart(2, '0');
+            const minutes = String(now.getMinutes()).padStart(2, '0');
+            const seconds = String(now.getSeconds()).padStart(2, '0');
+            document.getElementById('clock').textContent = `${hours}:${minutes}:${seconds}`;
+        }
 
-    <textarea id="answer" placeholder="Answer will appear here..."></textarea>
-    <button id="submitAnswer">Submit Answer</button>
+        function applyColorsFromQuery() {
+            const params = new URLSearchParams(window.location.search);
+            const fontColor = params.get('f');
+            const bgColor = params.get('b');
+            
+            if (fontColor) {
+                document.getElementById('clock').style.color = `#${fontColor}`;
+            }
+            if (bgColor) {
+                document.body.style.backgroundColor = `#${bgColor}`;
+            }
+        }
 
-    <script src="app.js"></script>
+        applyColorsFromQuery();
+        updateClock();
+        setInterval(updateClock, 1000);
+    </script>
 </body>
 </html>
